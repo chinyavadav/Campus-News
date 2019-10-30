@@ -1,0 +1,56 @@
+<!--
+  Generated template for the CommentsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+	<ion-navbar color="primary">
+		<ion-title>Comments</ion-title>
+		<ion-buttons end>
+			<button ion-button icon-only (click)="getMessages()">
+				<ion-icon name="refresh"></ion-icon>
+			</button>
+		</ion-buttons>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	<ion-item>
+		<h2>{{ post.fldpost_title }}</h2>
+		<p>{{post.fldtimestamp}}</p>
+	</ion-item>
+	<div class="cmnt-wrap" *ngIf="global.session">
+		<div *ngFor="let cmnt of chat" class="comment" [class.left]="cmnt.fromUserId !== global.session.flduser_id" [class.right]="cmnt.fromUserId === global.session.flduser_id">
+			<img *ngIf="cmnt.visible === 'true'"class="user-img" src="assets/icon/user.png" alt="">
+			<div *ngIf="cmnt.visible === 'true'" class="cmnt-detail" >
+				<div class="cmnt-info">
+					<p>
+					{{cmnt.fromUserName}}&nbsp;&nbsp;&nbsp;{{cmnt.time}}</p>
+				</div>
+				<div class="cmnt-content">
+					<span class="triangle"></span>
+					<p class="line-breaker" (click)="delete(cmnt.commentId)">{{cmnt.comment}}</p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</ion-content>
+<ion-footer no-border [style.height]="showEmojiPicker ? '255px' : '55px'">
+	<div class="input-wrap">
+		<button ion-button clear icon-only item-right (click)="switchEmojiPicker()">
+			<ion-icon name="md-happy"></ion-icon>
+		</button>
+		<textarea #chat_input
+		placeholder="Enter Message"
+		[(ngModel)]="editorCmnt"
+		(keyup.enter)="sendCmnt('Text')"
+		(focusin)="onFocus()">
+	</textarea>
+	<button ion-button clear icon-only item-right (click)="sendCmnt('Text')">
+		<ion-icon name="ios-send" ios="ios-send" md="md-send"></ion-icon>
+	</button>
+</div>
+<!--emoji-picker [(ngModel)]="editorCmnt"></emoji-picker-->
+</ion-footer>
